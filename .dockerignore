@@ -1,0 +1,8 @@
+.git
+.claude
+.DS_Store
+**/.DS_Store
+*.tar
+*.tar.gz
+*.bak
+node_modules

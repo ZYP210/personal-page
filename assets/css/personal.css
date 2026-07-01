@@ -1,0 +1,578 @@
+:root {
+  --ink: #f7f8fb;
+  --muted: rgba(231, 235, 244, .62);
+  --line: rgba(255, 255, 255, .2);
+  --accent: #a7ffef;
+  --panel: rgba(7, 10, 24, .88);
+}
+
+body {
+  font-family: "Avenir Next", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  z-index: 2;
+  top: 14%;
+  left: 50%;
+  width: 64%;
+  height: 62%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 42%, rgba(5, 7, 17, .94) 0%, rgba(5, 7, 17, .82) 44%, rgba(5, 7, 17, .4) 64%, rgba(5, 7, 17, 0) 80%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .8s ease;
+}
+
+body.fp-viewing-u::before {
+  opacity: 1;
+}
+
+body.qring::before {
+  opacity: 0;
+}
+
+body.qring .section.active .personal-copy,
+body.qring .section.active .personal-slogan,
+body.qring .section.active .personal-signoff,
+body.qring .section.active .personal-cta {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.loadingtxt span {
+  letter-spacing: .22em;
+  color: rgba(255, 255, 255, .72);
+}
+
+.fullpage .section .personal-copy {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  bottom: auto;
+  width: min(34vw, 480px);
+  margin: 0;
+  transform: translateY(-50%);
+  color: var(--ink);
+  text-align: left;
+  user-select: none;
+  z-index: 3;
+  isolation: isolate;
+}
+
+/* 文本位置随每屏粒子模型的位置交替：粒子偏左→文字靠右，粒子偏右→文字靠左，
+   与原页面一致（page1 右 / page2 左 / page3 右 / page4 左）。
+   仅桌面端生效；移动端沿用底部统一布局（见文件末尾的 @media 规则）。 */
+@media (min-width: 761px) {
+  .fullpage .section.page1 .personal-copy { left: auto; right: 8%; }
+  .fullpage .section.page2 .personal-copy { left: 13%; right: auto; }
+  .fullpage .section.page3 .personal-copy { left: auto; right: 9%; }
+  .fullpage .section.page4 .personal-copy { left: 13%; right: auto; }
+}
+
+.personal-copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -72px -86px;
+  background: radial-gradient(ellipse at 38% 50%, rgba(5, 7, 17, .96) 0%, rgba(5, 7, 17, .88) 48%, rgba(5, 7, 17, .34) 68%, rgba(5, 7, 17, 0) 82%);
+  pointer-events: none;
+}
+
+.personal-copy .eyebrow {
+  display: block;
+  margin-bottom: 26px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .32em;
+}
+
+.personal-copy h1 {
+  margin: 0;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: clamp(34px, 3.2vw, 52px);
+  font-weight: 300;
+  line-height: 1.22;
+  letter-spacing: .045em;
+  text-shadow: 0 0 30px rgba(172, 239, 255, .12);
+}
+
+.personal-copy p {
+  width: 100%;
+  margin: 28px 0 0;
+  color: var(--muted);
+  font-size: clamp(12px, 1vw, 15px);
+  line-height: 2;
+  letter-spacing: .08em;
+}
+
+.section.active .personal-copy .eyebrow,
+.section.active .personal-copy h1,
+.section.active .personal-copy p {
+  animation: personal-reveal 1.15s cubic-bezier(.2, .75, .2, 1) both;
+}
+
+.section.active .personal-copy h1 { animation-delay: .14s; }
+.section.active .personal-copy p { animation-delay: .28s; }
+
+@keyframes personal-reveal {
+  from { opacity: 0; transform: translateY(26px); filter: blur(12px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.fixedcon .logo-up {
+  display: flex;
+  align-items: flex-start;
+  width: 126px;
+  height: 92px;
+  background: none !important;
+  color: #fff;
+  font-family: "Avenir Next Condensed", "Arial Narrow", sans-serif;
+  line-height: .8;
+  letter-spacing: -.08em;
+}
+
+.mouse .outline,
+.mouse .wheel {
+  background-image: none !important;
+}
+
+/* 右上角控制图标：全屏 + 背景音乐。绘制为清晰的线性图标并对齐；
+   点击功能由 common.js 绑定（music → 播放/暂停 bg.mp3，fullsc → 全屏切换）。 */
+.fixedcon .control i {
+  box-sizing: border-box;
+  vertical-align: middle;
+  transform: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 23px 23px;
+  opacity: .8;
+  transition: opacity .25s ease;
+}
+
+.fixedcon .control i.show {
+  width: 26px;
+  height: 26px;
+  margin: 0 11px;
+}
+
+.fixedcon .control i:hover { opacity: 1; }
+
+.fixedcon .control .fullsc {
+  border: 0;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/></svg>") !important;
+}
+
+.fixedcon .control .fullsc.enabled {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5'/></svg>") !important;
+}
+
+.fixedcon .control .music {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 9v6h4l5 4V5L8 9H4z'/><path d='M16 8.6a4 4 0 0 1 0 6.8'/><path d='M18.8 5.6a8 8 0 0 1 0 12.8'/></svg>") !important;
+}
+
+.fixedcon .control .music.mute {
+  opacity: .55;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 9v6h4l5 4V5L8 9H4z'/><path d='M16.5 9.5l5 5M21.5 9.5l-5 5'/></svg>") !important;
+}
+
+.mouse .outline {
+  box-sizing: border-box;
+  width: 28px;
+  height: 48px;
+  margin-left: 6px;
+  border: 1px solid rgba(255, 255, 255, .55);
+  border-radius: 18px;
+}
+
+.mouse .wheel {
+  left: 18px;
+  top: 8px;
+  width: 3px;
+  height: 8px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.logo-up span {
+  font-size: 76px;
+  font-weight: 200;
+}
+
+.logo-up b {
+  margin: 9px 0 0 4px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, .55);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: .08em;
+}
+
+.fixedcon .logo-ieg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: auto;
+  min-width: 260px;
+  height: 48px;
+  background: none !important;
+  color: #fff;
+  letter-spacing: .15em;
+}
+
+.logo-ieg strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.logo-ieg span {
+  margin-top: 7px;
+  color: rgba(255, 255, 255, .48);
+  font-size: 8px;
+  letter-spacing: .34em;
+}
+
+.fixedcon .nav ul li span {
+  width: 180px;
+  font-family: "Avenir Next", sans-serif;
+  font-size: 11px;
+  letter-spacing: .08em;
+}
+
+.fullpage .dots .dot {
+  cursor: pointer;
+}
+
+.fullpage .dots .dot::after {
+  content: attr(title);
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  width: max-content;
+  max-width: 190px;
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(4, 7, 18, .74);
+  color: rgba(255, 255, 255, .86);
+  font-family: "PingFang SC", sans-serif;
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: .08em;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(8px, -50%);
+  transition: opacity .25s, transform .25s;
+  backdrop-filter: blur(8px);
+}
+
+.fullpage .dots .dot:hover::after {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.contact-chip {
+  box-sizing: border-box;
+  width: 128px;
+  height: 118px;
+  padding: 20px 10px;
+  color: #fff;
+  text-align: center;
+}
+
+.contact-chip:focus {
+  outline: none;
+}
+
+.contact-chip:focus-visible .personal-mark {
+  box-shadow: 0 0 0 3px rgba(167, 255, 239, .2);
+}
+
+.contact-chip .personal-mark {
+  display: block;
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 9px;
+  border: 1px solid rgba(255, 255, 255, .58);
+  border-radius: 50%;
+  background: none !important;
+  font-size: 20px;
+  font-style: normal;
+  line-height: 34px;
+}
+
+.contact-chip .contact-label {
+  font-size: 8px;
+  letter-spacing: .25em;
+}
+
+.contact-chip .contact-card {
+  position: absolute;
+  right: 108px;
+  bottom: 24px;
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  background: rgba(7, 9, 22, .9);
+  font-size: 12px;
+  letter-spacing: .08em;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(10px);
+  transition: opacity .25s, transform .25s;
+  backdrop-filter: blur(12px);
+}
+
+.contact-chip:hover .contact-card,
+.contact-chip.qr-active .contact-card {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.pop .pop-wrap,
+.pop.tall .pop-wrap {
+  width: min(680px, 82vw);
+  height: min(430px, 72vh);
+}
+
+.pop .pop-in {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, .18);
+  background: var(--panel);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, .52);
+  backdrop-filter: blur(22px);
+}
+
+.pop .pop-in .pop-close {
+  top: 22px;
+  right: 22px;
+  width: 42px;
+  height: 42px;
+  background: none !important;
+  z-index: 3;
+}
+
+.pop .pop-in .pop-close::before,
+.pop .pop-in .pop-close::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 20px;
+  width: 24px;
+  height: 1px;
+  background: #fff;
+}
+
+.pop .pop-in .pop-close::before { transform: rotate(45deg); }
+.pop .pop-in .pop-close::after { transform: rotate(-45deg); }
+
+.personal-project-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 68px 76px;
+  color: #fff;
+  text-align: left !important;
+}
+
+.project-index {
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: .3em;
+}
+
+.personal-project-card h2 {
+  margin: 24px 0 18px;
+  font-family: "Songti SC", serif;
+  font-size: clamp(30px, 4vw, 54px);
+  font-weight: 300;
+  letter-spacing: .06em;
+}
+
+.personal-project-card p {
+  max-width: 520px;
+  margin: 0;
+  color: rgba(255, 255, 255, .64);
+  font-size: 14px;
+  line-height: 2;
+  letter-spacing: .06em;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.project-tags span {
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  color: rgba(255, 255, 255, .72);
+  font-size: 9px;
+  letter-spacing: .16em;
+}
+
+/* Contact 屏：水平居中的竖向堆叠（slogan → 署名 → CTA），与原页面一致。
+   尺寸基于 vw/px（不用 rem，避免 adjustSize 的 rem 缩放把字号放大），
+   各块 top 间距固定，确保不会重叠。 */
+.section.page6 .personal-slogan,
+.section.page6.active .personal-slogan {
+  top: 27%;
+  left: 50%;
+  width: auto;
+  margin: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  text-align: center;
+  color: rgba(255, 255, 255, .74);
+  font-family: "Songti SC", serif;
+  font-size: clamp(26px, 2.8vw, 46px);
+  font-weight: 300;
+  letter-spacing: .18em;
+  line-height: 1.3;
+  animation: none !important;
+  opacity: 1;
+  filter: none;
+}
+
+.section.page6 .personal-signoff,
+.section.page6.active .personal-signoff,
+.webglyes .page6 .personal-signoff {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 44%;
+  left: 50%;
+  width: auto;
+  margin: 0;
+  transform: translateX(-50%);
+  color: #fff;
+  text-align: center;
+  animation: signoff-rise 1.2s .2s both !important;
+  filter: none;
+}
+
+/* 居中署名的入场动画：保留 translateX(-50%)，避免被 translateY 覆盖导致跑偏 */
+@keyframes signoff-rise {
+  from { opacity: 0; transform: translate(-50%, 16px); filter: blur(10px); }
+  to { opacity: 1; transform: translate(-50%, 0); filter: blur(0); }
+}
+
+.personal-signoff span {
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: .38em;
+}
+
+.personal-signoff strong {
+  margin-top: 15px;
+  font-family: "Avenir Next Condensed", sans-serif;
+  font-size: clamp(36px, 4vw, 60px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: .01em;
+}
+
+.personal-signoff small {
+  margin-top: 15px;
+  color: rgba(255, 255, 255, .42);
+  font-size: 9px;
+  letter-spacing: .34em;
+}
+
+.page6 .personal-cta,
+.webglyes .page6 .personal-cta {
+  box-sizing: border-box;
+  display: block;
+  top: 64%;
+  left: 50%;
+  width: 220px;
+  height: 58px;
+  margin: 0;
+  transform: translateX(-50%);
+  font-size: 0;
+  text-indent: 0;
+  text-decoration: none;
+}
+
+.page6 .personal-cta .btnbg,
+.webglyes .page6 .personal-cta .btnbg {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, .24);
+}
+
+.page6 .personal-cta i,
+.webglyes .page6 .personal-cta i {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 58px;
+  margin: 0;
+  background: none !important;
+  color: #fff;
+  font-size: 12px;
+  font-style: normal;
+  line-height: 58px;
+  letter-spacing: .25em;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  body::before {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 62%;
+    background: linear-gradient(0deg, #050711 0%, rgba(5, 7, 17, .96) 58%, rgba(5, 7, 17, 0) 100%);
+    opacity: 1;
+  }
+
+  .fullpage .section .personal-copy {
+    top: auto;
+    left: 9%;
+    bottom: 12%;
+    width: 82%;
+    transform: none;
+  }
+
+  .personal-copy h1 { font-size: 34px; }
+  .personal-copy p { font-size: 12px; line-height: 1.8; }
+  .personal-copy .eyebrow { margin-bottom: 16px; }
+
+  .mobile .section.page6 .personal-slogan {
+    top: 38%;
+    left: 10%;
+    width: 80%;
+    margin: 0;
+    font-size: 26px;
+  }
+
+  .mobile .section.page6 .personal-signoff {
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    margin: 0;
+  }
+
+  .mobile .page6 .personal-cta {
+    display: block;
+    top: auto;
+    left: 10%;
+    bottom: 14%;
+    width: 180px;
+    margin: 0;
+    pointer-events: auto;
+  }
+
+  .mobile .page6 .personal-cta::before,
+  .mobile .page6 .personal-cta::after { display: none; }
+
+  .personal-project-card { padding: 46px 34px; }
+}

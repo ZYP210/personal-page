@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="512" viewBox="0 0 1024 512">
+  <g fill="#fff" text-anchor="middle">
+    <text x="512" y="220" font-family="Avenir Next Condensed,Arial Narrow,sans-serif" font-size="174" font-weight="200" letter-spacing="-8">ZYP</text>
+    <line x1="350" y1="262" x2="674" y2="262" stroke="#fff" stroke-width="2" opacity=".7"/>
+    <text x="512" y="330" font-family="Avenir Next,Arial,sans-serif" font-size="34" font-weight="500" letter-spacing="9">ZHANG YUPENG</text>
+    <text x="512" y="382" font-family="Avenir Next,Arial,sans-serif" font-size="19" font-weight="400" letter-spacing="8" opacity=".78">PERSONAL PORTFOLIO</text>
+  </g>
+</svg>
